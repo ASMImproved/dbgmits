@@ -6,6 +6,7 @@ import GDBDebugSession from './gdb_debug_session';
 import { spawn, ChildProcess } from 'child_process';
 import * as os from 'os';
 import * as path from 'path';
+import * as stream from 'stream';
 
 function setProcessEnvironment(): void {
   // HACK for LLDB on Windows (where users have to build their own Python)
@@ -91,3 +92,10 @@ export function startDebugSession(debuggerType: DebuggerType, debuggerFilename?:
   }
   return debugSession;
 };
+
+export function startGDBDebugSessionFromExistingProcess(stdout: stream.Readable, stdin: stream.Writable, exitSubject) {
+  let debugSession: DebugSession = null;
+  debugSession = new DebugSession(stdout, stdin);
+  // exit subject subscribe
+  return debugSession;
+}
