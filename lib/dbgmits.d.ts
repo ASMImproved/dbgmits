@@ -1,4 +1,5 @@
 import DebugSession from './debug_session';
+import * as stream from 'stream';
 export declare enum DebuggerType {
     GDB = 0,
     LLDB = 1,
@@ -14,3 +15,4 @@ export declare enum DebuggerType {
  * @returns A new debug session, or null if a new session couldn't be started.
  */
 export declare function startDebugSession(debuggerType: DebuggerType, debuggerFilename?: string): DebugSession;
+export declare function startGDBDebugSessionFromExistingProcess(stdout: stream.Readable, stdin: stream.Writable, exitSubject: any): DebugSession;
