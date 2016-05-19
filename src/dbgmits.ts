@@ -93,9 +93,10 @@ export function startDebugSession(debuggerType: DebuggerType, debuggerFilename?:
   return debugSession;
 };
 
-export function startGDBDebugSessionFromExistingProcess(stdout: stream.Readable, stdin: stream.Writable, exitSubject) {
+export function startGDBDebugSessionFromExistingProcess(stdout: stream.Readable, stdin: stream.Writable, exitSubject: any) {
   let debugSession: DebugSession = null;
   debugSession = new DebugSession(stdout, stdin);
   // exit subject subscribe
   return debugSession;
 }
+
