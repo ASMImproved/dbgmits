@@ -413,6 +413,10 @@ export default class DebugSession extends events.EventEmitter {
         skipUnavailable?: boolean;
     }): Promise<IStackFrameVariablesInfo>;
     /**
+    * Allows to set internal GDB variables
+    */
+    gdbSet(variable: string, value: string): Promise<void>;
+    /**
      * Creates a new watch to monitor the value of the given expression.
      *
      * @param expression Any expression valid in the current language set (so long as it doesn't

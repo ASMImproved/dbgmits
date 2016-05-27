@@ -911,6 +911,13 @@ export default class DebugSession extends events.EventEmitter {
   //
 
   /**
+  * Allows to set internal GDB variables
+  */
+  gdbSet(variable: string, value: string): Promise<void> {
+    return this.executeCommand(`gdb-set ${variable}=${value}`);
+  }
+
+  /**
    * Creates a new watch to monitor the value of the given expression.
    *
    * @param expression Any expression valid in the current language set (so long as it doesn't
