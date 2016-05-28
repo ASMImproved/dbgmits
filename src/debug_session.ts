@@ -685,7 +685,7 @@ export default class DebugSession extends events.EventEmitter {
         `break-watch ${expression}`,
         null,
         (data: {wpt: {number: string, exp: string}}) => {
-          return {id: parseInt(data.wpt.number)}
+          return {id: parseInt(data.wpt.number, 10)};
         }
     );
   }
