@@ -314,6 +314,14 @@ export default class DebugSession extends events.EventEmitter {
         reverse?: boolean;
     }): Promise<void>;
     /**
+     * Allows to set internal GDB variables
+     */
+    gdbSet(variable: string, value: string): Promise<void>;
+    /**
+     * Break when the expression changes, behaves like a breakpoint
+     */
+    breakExpression(expression: string): Promise<IBreakpointInfo>;
+    /**
      * Retrieves information about a stack frame.
      *
      * @param options.threadId The thread for which the stack depth should be retrieved,
@@ -412,10 +420,6 @@ export default class DebugSession extends events.EventEmitter {
         noFrameFilters?: boolean;
         skipUnavailable?: boolean;
     }): Promise<IStackFrameVariablesInfo>;
-    /**
-    * Allows to set internal GDB variables
-    */
-    gdbSet(variable: string, value: string): Promise<void>;
     /**
      * Creates a new watch to monitor the value of the given expression.
      *

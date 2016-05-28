@@ -670,6 +670,20 @@ export default class DebugSession extends events.EventEmitter {
     return this.executeCommand(appendExecCmdOptions('exec-finish', options));
   }
 
+  /**
+   * Allows to set internal GDB variables
+   */
+  gdbSet(variable: string, value: string): Promise<void> {
+    return this.executeCommand(`gdb-set ${variable} ${value}`);
+  }
+
+  /**
+   * Break when the expression changes, behaves like a breakpoint
+   */
+  breakExpression(expression: string): Promise<IBreakpointInfo> {
+    return this.getCommandOutput(`break-watch ${expression}`, null, extractBreakpointInfo);
+  }
+
   //
   // Stack Inspection Commands
   //
@@ -909,13 +923,6 @@ export default class DebugSession extends events.EventEmitter {
   //
   // Watch Manipulation (aka Variable Objects)
   //
-
-  /**
-  * Allows to set internal GDB variables
-  */
-  gdbSet(variable: string, value: string): Promise<void> {
-    return this.executeCommand(`gdb-set ${variable} ${value}`);
-  }
 
   /**
    * Creates a new watch to monitor the value of the given expression.
