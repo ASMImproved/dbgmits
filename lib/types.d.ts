@@ -17,6 +17,8 @@ export declare enum TargetStopReason {
     ExitedSignalled = 7,
     /** An inferior terminated (for some reason, check exitCode for clues). */
     Exited = 8,
+    /** A watchpoint was triggered */
+    WatchpointTriggered = 9,
 }
 export interface IFrameInfoBase {
     /** Name of the function corresponding to the frame. */

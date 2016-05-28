@@ -19,7 +19,9 @@ export enum TargetStopReason {
   /** An inferior terminated because it received a signal. */
   ExitedSignalled,
   /** An inferior terminated (for some reason, check exitCode for clues). */
-  Exited
+  Exited,
+  /** A watchpoint was triggered */
+  WatchpointTriggered
 }
 
 export interface IFrameInfoBase {

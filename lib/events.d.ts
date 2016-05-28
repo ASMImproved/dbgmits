@@ -159,6 +159,16 @@ export declare const EVENT_TARGET_STOPPED: string;
   */
 export declare const EVENT_BREAKPOINT_HIT: string;
 /**
+ * Emitted when the target stops running because a breakpoint was hit.
+ *
+ * Listener function should have the signature:
+ * ~~~
+ * (e: [[IBreakpointHitEvent]]) => void
+ * ~~~
+ * @event
+ */
+export declare const EVENT_WATCHPOINT_TRIGGERED: string;
+/**
   * Emitted when the target stops due to a stepping operation finishing.
   *
   * Listener function should have the signature:
@@ -280,6 +290,10 @@ export interface ITargetStoppedEvent {
      * The debugger may not always provide a value for this field, in which case it will be `undefined`.
      */
     processorCore: string;
+}
+export interface IWatchpointTriggeredEvent extends ITargetStoppedEvent {
+    watchpointId: number;
+    frame: IFrameInfo;
 }
 export interface IBreakpointHitEvent extends ITargetStoppedEvent {
     breakpointId: number;

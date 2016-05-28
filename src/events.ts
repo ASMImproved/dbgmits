@@ -171,6 +171,17 @@ export const EVENT_TARGET_STOPPED: string = 'targetstop';
 export const EVENT_BREAKPOINT_HIT: string = 'brkpthit';
 
 /**
+ * Emitted when the target stops running because a breakpoint was hit.
+ *
+ * Listener function should have the signature:
+ * ~~~
+ * (e: [[IBreakpointHitEvent]]) => void
+ * ~~~
+ * @event
+ */
+export const EVENT_WATCHPOINT_TRIGGERED: string = 'watchpointtriggered';
+
+/**
   * Emitted when the target stops due to a stepping operation finishing.
   *
   * Listener function should have the signature:
@@ -306,6 +317,11 @@ export interface ITargetStoppedEvent {
   processorCore: string;
 }
 
+export interface IWatchpointTriggeredEvent extends ITargetStoppedEvent {
+  watchpointId: number;
+  frame: IFrameInfo;
+}
+
 export interface IBreakpointHitEvent extends ITargetStoppedEvent {
   breakpointId: number;
   frame: IFrameInfo;
@@ -356,6 +372,18 @@ export function createEventsForExecNotification(notification: string, data: any)
 
       // emit a more specialized event for notifications that contain additional info
       switch (stopEvent.reason) {
+        case TargetStopReason.WatchpointTriggered:
+          let watchpointTriggeredEvent: IWatchpointTriggeredEvent = {
+            reason: stopEvent.reason,
+            threadId: stopEvent.threadId,
+            stoppedThreads: stopEvent.stoppedThreads,
+            processorCore: stopEvent.processorCore,
+            watchpointId: parseInt(data.wpt.number, 10),
+            frame: extractFrameInfo(data.frame)
+          };
+          events.push({name: EVENT_WATCHPOINT_TRIGGERED, data: watchpointTriggeredEvent});
+          break;
+
         case TargetStopReason.BreakpointHit:
           let breakpointHitEvent: IBreakpointHitEvent = {
             reason: stopEvent.reason,
@@ -517,6 +545,7 @@ function extractFrameInfo(data: any): IFrameInfo {
 // actually used by LLDB MI at this time (11-Apr-2015).
 var targetStopReasonMap = new Map<string, TargetStopReason>()
   .set('breakpoint-hit', TargetStopReason.BreakpointHit)
+  .set('watchpoint-trigger', TargetStopReason.BreakpointHit)
   .set('end-stepping-range', TargetStopReason.EndSteppingRange)
   .set('function-finished', TargetStopReason.FunctionFinished)
   .set('exited-normally', TargetStopReason.ExitedNormally)
