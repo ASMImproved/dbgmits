@@ -681,7 +681,13 @@ export default class DebugSession extends events.EventEmitter {
    * Break when the expression changes, behaves like a breakpoint
    */
   breakExpression(expression: string): Promise<IBreakpointInfo> {
-    return this.getCommandOutput(`break-watch ${expression}`, null, extractBreakpointInfo);
+    return this.getCommandOutput<{id: number}>(
+        `break-watch ${expression}`,
+        null,
+        (data: {wpt: {number: string, exp: string}}) => {
+          return {id: parseInt(data.wpt.number)}
+        }
+    );
   }
 
   //
